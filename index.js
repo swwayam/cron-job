@@ -1,52 +1,48 @@
-const express = require('express');
-const cron = require('node-cron');
-const fs = require('fs');
+const express = require("express");
+const cron = require("node-cron");
+const fs = require("fs");
 
 const app = express();
-const port = 3000;
+const port = 1337;
 
-// Cron Jobs
-let cronJobs = {};
+// TODO: Initialize an empty object to store scheduled cron jobs. Each cron job will be associated with a unique name (key) and its corresponding cron instance (value).
 
 // API Endpoints
 
-// 1. Schedule a new cron job
-app.post('/schedule', express.json(), (req, res) => {
-    const { name, schedule } = req.body;
-    let task = () => { console.log('Cron job task executed!'); }; // Default task
+// 1. Schedule a New Cron Job
+app.post("/schedule", express.json(), (req, res) => {
+  // TODO: Extract job name and cron schedule expression from the request body.
 
-    // Allow custom task function
-    if (req.body.task && typeof req.body.task === 'function') {
-        task = req.body.task;
-    }
+  // TODO: Define a default task function that logs a message when executed.
 
-    try {
-        cronJobs[name] = cron.schedule(schedule, task);
-        res.json({ message: 'Cron job scheduled successfully', name });
-    } catch (error) {
-        res.status(500).json({ error: 'Invalid cron schedule' });
-    }
+  // TODO: Check if a custom task function is provided in the request body.
+  // TODO: Ensure the provided 'task' is a valid JavaScript function.
+
+  try {
+    // TODO: Schedule the cron job using the 'cron' library and Store the cron instance in the 'cronJobs' object with the provided name as the key.
+    // TODO: Respond with a success message and the name of the scheduled job.
+  } catch (error) {
+    // TODO: Handle invalid cron schedule expressions by responding with an error status and message.
+  }
 });
 
-// 2. List active cron jobs
-app.get('/list', (req, res) => {
-    const jobList = Object.keys(cronJobs).map(name => ({ name, running: cronJobs[name].running }));
-    res.json(jobList);
+// 2. List Active Cron Jobs
+app.get("/list", (req, res) => {
+  // TODO: Create an array of objects, each containing the job name and its running status.
+  // TODO: Respond with the list of active cron jobs.
 });
 
-// 3. Stop a cron job
-app.delete('/stop/:name', (req, res) => {
-    const name = req.params.name;
-    if (cronJobs[name]) {
-        cronJobs[name].stop();
-        delete cronJobs[name];
-        res.json({ message: 'Cron job stopped successfully' });
-    } else {
-        res.status(404).json({ error: 'Cron job not found' });
-    }
+// 3. Stop a Cron Job
+app.delete("/stop/:name", (req, res) => {
+  // TODO: Get the job name from the request parameters.
+  // TODO: Check if a cron job with the given name exists.
+    // TODO: Stop the cron job.
+    // TODO: Remove the cron job from the 'cronJobs' object.
+    // TODO: Respond with a success message.
+    // TODO: Handle the case where the cron job is not found by responding with an error status and message.
 });
 
 // Start the Express server
 app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}/`);
+  console.log(`Server running at http://localhost:${port}/`);
 });
